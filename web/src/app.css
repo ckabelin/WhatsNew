@@ -1,0 +1,30 @@
+@import 'tailwindcss';
+
+/* Self-hosted Inter (OFL-1.1) - see static/fonts/README.md for how to add the
+   font file. Falls back to the system UI font stack until it's present. */
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/InterVariable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  font-family:
+    'Inter',
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  @apply bg-neutral-950 text-neutral-100;
+}

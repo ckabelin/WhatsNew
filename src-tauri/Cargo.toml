@@ -1,0 +1,21 @@
+[package]
+name = "whatsnew"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "WhatsNew desktop application shell (Tauri)"
+default-run = "whatsnew"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+whatsnew-core = { path = "../crates/whatsnew-core" }
+tauri = { version = "2", features = [] }
+tauri-plugin-notification = "2"
+tauri-plugin-store = "2"
+serde.workspace = true
+serde_json.workspace = true
+tokio.workspace = true
+reqwest.workspace = true

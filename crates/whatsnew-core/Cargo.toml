@@ -1,0 +1,21 @@
+[package]
+name = "whatsnew-core"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Core data models, storage, feed fetching/parsing, discovery and matching logic for WhatsNew."
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+chrono.workspace = true
+tokio.workspace = true
+reqwest.workspace = true
+feed-rs.workspace = true
+scraper.workspace = true
+sqlx.workspace = true
+
+[dev-dependencies]
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "time", "sync", "test-util"] }
