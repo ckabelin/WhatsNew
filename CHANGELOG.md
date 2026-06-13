@@ -55,6 +55,10 @@ introduced.
   `CHANGELOG.md` in the same change.
 - Expanded the Tauri bundle configuration and CI/release workflows to validate
   desktop builds across Windows, macOS, and Linux.
+- Made CI desktop builds wait for both Rust and frontend checks to pass before
+  running.
+- Fixed CI desktop builds to use the npm-installed Tauri CLI instead of assuming
+  `cargo tauri` is preinstalled on GitHub runners.
 
 ## 2026-06-13
 
