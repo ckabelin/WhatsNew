@@ -98,10 +98,10 @@ from the repo root).
 
 The Tauri bundle config targets all formats supported by the current OS. Local
 build scripts print Windows `.exe`/`.msi`, macOS `.dmg`/`.app.tar.gz`, and Linux
-`.AppImage`/`.deb`/`.rpm` artifacts when produced. Pushes to `main` create
-run-numbered prerelease GitHub Releases with Windows, macOS Apple Silicon, macOS
-Intel, and Linux binaries. Tagged releases matching `v*.*.*` publish the same
-platform binaries as versioned GitHub Releases through the release workflow.
+`.AppImage`/`.deb`/`.rpm` artifacts when produced. Successful `main` CI runs
+create run-numbered prerelease GitHub Releases with Windows, macOS Apple Silicon,
+macOS Intel, and Linux binaries. Tagged releases matching `v*.*.*` publish the
+same platform binaries as versioned GitHub Releases through the release workflow.
 
 ## Coding conventions
 
