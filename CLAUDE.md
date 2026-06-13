@@ -71,6 +71,7 @@ web/
     └── settings/+page.svelte        # retention/cache/refresh settings form
 
 scripts/{setup,dev,build,test}.ps1   # PowerShell dev workflow (see Commands below)
+scripts/{setup,dev,build,test}.sh     # bash equivalents (macOS/Linux/WSL)
 .github/workflows/{ci,release}.yml
 ```
 
@@ -82,6 +83,9 @@ scripts/{setup,dev,build,test}.ps1   # PowerShell dev workflow (see Commands bel
 ./scripts/test.ps1      # cargo test --workspace, clippy, npm run check, npm run lint
 ./scripts/build.ps1      # npm run tauri build, prints installer path
 ```
+
+Bash equivalents (macOS/Linux/WSL) live alongside them as `scripts/*.sh` and run the
+same steps (the setup script skips the MSVC linker check, which is Windows-only).
 
 Equivalent raw commands: `cargo test -p whatsnew-core`, `cargo test --workspace`,
 `cargo clippy --workspace --all-targets -- -D warnings`, `cargo fmt --all --check`;
