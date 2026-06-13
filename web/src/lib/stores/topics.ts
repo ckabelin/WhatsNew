@@ -10,7 +10,7 @@ export async function loadTopics() {
 
 export async function addTopic(name: string) {
   const topic = await topicsApi.createTopic(name);
-  topics.update((list) => [...list, topic].sort((a, b) => a.name.localeCompare(b.name)));
+  topics.update((list) => [...list, topic].sort((a, b) => a.sort_order - b.sort_order));
   return topic;
 }
 
@@ -22,6 +22,10 @@ export async function removeTopic(id: number) {
 export async function renameTopicInStore(id: number, name: string) {
   const updated = await topicsApi.renameTopic(id, name);
   topics.update((list) => list.map((t) => (t.id === id ? updated : t)));
+}
+
+export async function reorderTopics(topicIds: number[]) {
+  topics.set(await topicsApi.reorderTopics(topicIds));
 }
 
 export async function setTopicNotifications(id: number, enabled: boolean) {

@@ -142,11 +142,11 @@ from the repo root).
 
 ## Known caveats
 
-- `src-tauri/icons/` contains a generated placeholder icon set (from
-  `source-placeholder.png`) so `cargo build`/`tauri build` succeed —
-  `tauri-build` requires `icon.ico` even for debug builds. Replace with real
-  artwork via `./web/node_modules/.bin/tauri.cmd icon <logo.png>` from the repo
-  root (see `src-tauri/icons/README.md`).
+- `src-tauri/icons/` contains `source.png` plus the generated desktop icon set
+  used by `cargo build`/`tauri build` — `tauri-build` requires `icon.ico` even
+  for debug builds. Replace artwork via
+  `./web/node_modules/.bin/tauri.cmd icon <logo.png>` from the repo root (see
+  `src-tauri/icons/README.md`).
 - `web/static/fonts/` needs `InterVariable.woff2` added manually (OFL-1.1); the
   app falls back to the system font stack without it.
 - Windows toast notifications may not show in unbundled `tauri dev` — verify via

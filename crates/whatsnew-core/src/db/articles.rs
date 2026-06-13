@@ -64,6 +64,15 @@ pub async fn list_for_topic(pool: &SqlitePool, topic_id: i64, limit: i64) -> Res
     .await?)
 }
 
+pub async fn get(pool: &SqlitePool, article_id: i64) -> Result<Article> {
+    Ok(
+        sqlx::query_as::<_, Article>("SELECT * FROM articles WHERE id = ?")
+            .bind(article_id)
+            .fetch_one(pool)
+            .await?,
+    )
+}
+
 /// Deletes all articles older than `cutoff` (by published date, falling back to
 /// fetched date). Returns the number of rows deleted.
 pub async fn delete_older_than(pool: &SqlitePool, cutoff: DateTime<Utc>) -> Result<u64> {

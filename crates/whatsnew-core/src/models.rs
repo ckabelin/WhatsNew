@@ -8,6 +8,7 @@ pub struct Topic {
     pub name: String,
     pub notifications_enabled: bool,
     pub initial_refresh_done: bool,
+    pub sort_order: i64,
     pub created_at: DateTime<Utc>,
 }
 

@@ -53,7 +53,7 @@ This repository contains the foundation and MVP implementation:
 |-- src-tauri/
 |   |-- tauri.conf.json         # Tauri app and bundle config
 |   |-- capabilities/           # Tauri command permissions
-|   |-- icons/                  # generated placeholder icon set
+|   |-- icons/                  # app icon source and generated desktop icon set
 |   `-- src/                    # app state, scheduler, notifications, commands
 |-- web/
 |   |-- package.json            # SvelteKit frontend scripts/dependencies
@@ -191,8 +191,8 @@ The database stores topics, feeds, topic/feed links, articles, and settings.
 
 ## Known Caveats
 
-- `src-tauri/icons/` contains generated placeholder icons so Tauri builds work.
-  Replace them before shipping branded builds.
+- `src-tauri/icons/` contains `source.png` and the generated desktop icon set used
+  by Tauri builds.
 - `web/static/fonts/` does not include `InterVariable.woff2` by default. The app
   falls back to the system font stack unless the font is added manually.
 - Windows toast notifications may not appear reliably in unbundled `tauri dev`;

@@ -13,8 +13,8 @@
   <div class="flex h-full">
     <button
       class="inline-flex h-full w-11 items-center justify-center text-neutral-400 hover:bg-neutral-800 hover:text-neutral-100"
-      onclick={() => appWindow.minimize()}
-      aria-label="Minimize"
+      onclick={() => appWindow.hide()}
+      aria-label="Minimize to tray"
     >
       <Minus size={16} />
     </button>

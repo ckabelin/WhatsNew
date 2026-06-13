@@ -28,6 +28,24 @@ introduced.
 
 - Created this actively maintained changelog for project history and release
   notes.
+- Added a self-contained article reader page that fetches and extracts readable
+  article text inside the app.
+- Added real WhatsNew app icon artwork and regenerated the Tauri desktop icon
+  set.
+- Added persistent topic ordering with drag-and-drop and up/down controls in the
+  sidebar.
+- Show article publish times alongside publish dates in article cards and the
+  in-app reader.
+- Added a system tray icon with show and quit actions; closing the window now
+  hides WhatsNew to the tray instead of exiting.
+- Added a popular topic cloud below the topic input for quick topic preselection.
+- Kept the article reader back button sticky so it remains available at any
+  scroll position.
+- Show non-ad article images in the in-app reader when they can be extracted from
+  the source article page.
+- Show the current article title in the sticky reader toolbar.
+- Preserve article image placement relative to text in the in-app reader when
+  extracting readable content.
 
 ### Internal
 

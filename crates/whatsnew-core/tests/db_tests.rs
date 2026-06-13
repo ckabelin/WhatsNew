@@ -57,3 +57,35 @@ async fn topic_crud_and_settings_roundtrip() {
     topics::delete(&db.pool, topic.id).await.unwrap();
     assert!(topics::list(&db.pool).await.unwrap().is_empty());
 }
+
+#[tokio::test]
+async fn topic_order_can_be_rearranged() {
+    let db = Db::connect_in_memory().await.unwrap();
+
+    let rust = topics::create(&db.pool, "Rust").await.unwrap();
+    let design = topics::create(&db.pool, "Design").await.unwrap();
+    let security = topics::create(&db.pool, "Security").await.unwrap();
+
+    let initial = topics::list(&db.pool).await.unwrap();
+    assert_eq!(
+        initial.iter().map(|topic| topic.id).collect::<Vec<_>>(),
+        vec![rust.id, design.id, security.id]
+    );
+
+    let reordered = topics::reorder(&db.pool, &[security.id, rust.id, design.id])
+        .await
+        .unwrap();
+    assert_eq!(
+        reordered.iter().map(|topic| topic.id).collect::<Vec<_>>(),
+        vec![security.id, rust.id, design.id]
+    );
+
+    let listed = topics::list(&db.pool).await.unwrap();
+    assert_eq!(
+        listed.iter().map(|topic| topic.id).collect::<Vec<_>>(),
+        vec![security.id, rust.id, design.id]
+    );
+
+    let invalid = topics::reorder(&db.pool, &[security.id, rust.id]).await;
+    assert!(invalid.is_err());
+}

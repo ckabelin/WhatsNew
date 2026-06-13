@@ -1,6 +1,7 @@
 use tauri::State;
 use whatsnew_core::db::articles;
 use whatsnew_core::models::Article;
+use whatsnew_core::reader::ReadableArticle;
 
 use crate::state::AppState;
 
@@ -11,6 +12,16 @@ pub async fn list_articles(
     limit: Option<i64>,
 ) -> Result<Vec<Article>, String> {
     articles::list_for_topic(&state.db.pool, topic_id, limit.unwrap_or(100))
+        .await
+        .map_err(|e| e.to_string())
+}
+
+#[tauri::command]
+pub async fn read_article(
+    state: State<'_, AppState>,
+    article_id: i64,
+) -> Result<ReadableArticle, String> {
+    whatsnew_core::reader::read_article(&state.db.pool, &state.http, article_id)
         .await
         .map_err(|e| e.to_string())
 }
