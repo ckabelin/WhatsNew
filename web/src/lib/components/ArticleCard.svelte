@@ -15,15 +15,18 @@
   }
 
   const published = $derived(formatDate(article.published_at));
+
+  function openArticle() {
+    if (!article.link) return;
+    window.open(article.link, '_blank', 'noopener,noreferrer');
+  }
 </script>
 
-<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
-<a
-  href={article.link ?? undefined}
-  data-sveltekit-reload
-  target="_blank"
-  rel="noreferrer noopener"
-  class="flex flex-col gap-2 rounded-lg border border-neutral-800 bg-neutral-900 p-4 transition-colors hover:border-neutral-700 hover:bg-neutral-800"
+<button
+  type="button"
+  onclick={openArticle}
+  disabled={!article.link}
+  class="flex flex-col gap-2 rounded-lg border border-neutral-800 bg-neutral-900 p-4 text-left transition-colors hover:border-neutral-700 hover:bg-neutral-800 disabled:cursor-default"
 >
   <h3 class="text-sm font-semibold text-neutral-100">{article.title}</h3>
   {#if article.summary}
@@ -32,4 +35,4 @@
   {#if published}
     <span class="mt-auto text-xs text-neutral-500">{published}</span>
   {/if}
-</a>
+</button>
