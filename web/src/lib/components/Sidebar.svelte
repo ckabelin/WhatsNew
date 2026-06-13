@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { resolve } from '$app/paths';
   import { page } from '$app/stores';
   import { Newspaper, ListTree, Settings } from 'lucide-svelte';
   import { topics } from '$lib/stores/topics';
@@ -10,7 +11,7 @@
   <div class="flex flex-col gap-1">
     {#each $topics as topic (topic.id)}
       <a
-        href={`/topic/${topic.id}`}
+        href={resolve('/topic/[id]', { id: String(topic.id) })}
         class="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors
           {$page.params.id === String(topic.id)
           ? 'bg-neutral-800 text-neutral-100'
@@ -24,7 +25,7 @@
 
   <div class="mt-auto flex flex-col gap-1 border-t border-neutral-800 pt-2">
     <a
-      href="/topics"
+      href={resolve('/topics')}
       class="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors
         {$page.url.pathname === '/topics'
         ? 'bg-neutral-800 text-neutral-100'
@@ -34,7 +35,7 @@
       <span>Topics</span>
     </a>
     <a
-      href="/settings"
+      href={resolve('/settings')}
       class="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors
         {$page.url.pathname === '/settings'
         ? 'bg-neutral-800 text-neutral-100'

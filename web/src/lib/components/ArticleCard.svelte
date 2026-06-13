@@ -19,6 +19,7 @@
 
 <a
   href={article.link ?? undefined}
+  data-sveltekit-reload
   target="_blank"
   rel="noreferrer noopener"
   class="flex flex-col gap-2 rounded-lg border border-neutral-800 bg-neutral-900 p-4 transition-colors hover:border-neutral-700 hover:bg-neutral-800"
