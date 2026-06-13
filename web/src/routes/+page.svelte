@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { resolve } from '$app/paths';
   import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
   import EmptyState from '$lib/components/EmptyState.svelte';
@@ -11,7 +12,7 @@
     await loadTopics();
     const list = $topics;
     if (list.length > 0) {
-      await goto(`/topic/${list[0].id}`);
+      await goto(resolve('/topic/[id]', { id: String(list[0].id) }));
     } else {
       loading = false;
     }
@@ -21,7 +22,7 @@
 {#if !loading}
   <EmptyState title="No topics yet" description="Add a topic to start aggregating news for it.">
     {#snippet action()}
-      <Button onclick={() => goto('/topics')}>Add a topic</Button>
+      <Button onclick={() => goto(resolve('/topics'))}>Add a topic</Button>
     {/snippet}
   </EmptyState>
 {/if}

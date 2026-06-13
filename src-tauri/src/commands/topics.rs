@@ -51,6 +51,16 @@ pub async fn rename_topic(
 }
 
 #[tauri::command]
+pub async fn reorder_topics(
+    state: State<'_, AppState>,
+    topic_ids: Vec<i64>,
+) -> Result<Vec<Topic>, String> {
+    topics::reorder(&state.db.pool, &topic_ids)
+        .await
+        .map_err(|e| e.to_string())
+}
+
+#[tauri::command]
 pub async fn delete_topic(state: State<'_, AppState>, id: i64) -> Result<(), String> {
     topics::delete(&state.db.pool, id)
         .await

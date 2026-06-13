@@ -3,6 +3,7 @@ export interface Topic {
   name: string;
   notifications_enabled: boolean;
   initial_refresh_done: boolean;
+  sort_order: number;
   created_at: string;
 }
 
@@ -27,6 +28,30 @@ export interface Article {
   published_at: string | null;
   fetched_at: string;
 }
+
+export interface ReadableArticle {
+  article: Article;
+  source_url: string;
+  title: string;
+  paragraphs: string[];
+  images: ReadableImage[];
+  content: ReadableBlock[];
+}
+
+export interface ReadableImage {
+  url: string;
+  alt: string | null;
+}
+
+export type ReadableBlock =
+  | {
+      kind: 'paragraph';
+      text: string;
+    }
+  | {
+      kind: 'image';
+      image: ReadableImage;
+    };
 
 export interface Settings {
   retention_days: number;

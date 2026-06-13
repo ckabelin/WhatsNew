@@ -5,6 +5,7 @@ mod commands;
 mod notify;
 mod scheduler;
 mod state;
+mod tray;
 
 use std::sync::Arc;
 
@@ -39,6 +40,7 @@ fn main() {
             });
 
             scheduler::spawn(app.handle().clone());
+            tray::setup(app)?;
 
             Ok(())
         })
@@ -46,9 +48,11 @@ fn main() {
             commands::topics::list_topics,
             commands::topics::create_topic,
             commands::topics::rename_topic,
+            commands::topics::reorder_topics,
             commands::topics::delete_topic,
             commands::topics::set_topic_notifications,
             commands::articles::list_articles,
+            commands::articles::read_article,
             commands::articles::refresh_topic_now,
             commands::feeds::list_topic_feeds,
             commands::feeds::add_feed_to_topic,

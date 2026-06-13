@@ -7,6 +7,29 @@
 
   let newTopicName = $state('');
 
+  const suggestedTopics = [
+    'Artificial Intelligence',
+    'Technology',
+    'World News',
+    'Business',
+    'Markets',
+    'Science',
+    'Health',
+    'Climate',
+    'Cybersecurity',
+    'Politics',
+    'Sports',
+    'Entertainment',
+    'Gaming',
+    'Startups',
+    'Rust Programming',
+    'Open Source'
+  ];
+
+  const existingTopicNames = $derived(
+    new Set($topics.map((topic) => topic.name.trim().toLocaleLowerCase()))
+  );
+
   onMount(() => {
     loadTopics();
   });
@@ -20,6 +43,10 @@
 
   function onKeydown(e: KeyboardEvent) {
     if (e.key === 'Enter') onAdd();
+  }
+
+  function selectSuggestedTopic(name: string) {
+    newTopicName = name;
   }
 </script>
 
@@ -36,6 +63,24 @@
     </div>
     <Button onclick={onAdd}>Add</Button>
   </div>
+
+  <section class="flex flex-col gap-2">
+    <h2 class="text-sm font-medium text-neutral-300">Popular topics</h2>
+    <div class="flex flex-wrap gap-2">
+      {#each suggestedTopics as topic (topic)}
+        {@const exists = existingTopicNames.has(topic.toLocaleLowerCase())}
+        <button
+          type="button"
+          class="rounded-full border border-neutral-700 px-3 py-1 text-sm text-neutral-300 transition-colors hover:border-teal-600 hover:bg-teal-950/50 hover:text-neutral-100 disabled:cursor-default disabled:border-neutral-800 disabled:text-neutral-600 disabled:hover:bg-transparent"
+          disabled={exists}
+          aria-label={exists ? `${topic} already added` : `Select ${topic}`}
+          onclick={() => selectSuggestedTopic(topic)}
+        >
+          {topic}
+        </button>
+      {/each}
+    </div>
+  </section>
 
   <div class="flex flex-col gap-2">
     {#each $topics as topic (topic.id)}
