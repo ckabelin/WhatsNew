@@ -17,6 +17,7 @@ use crate::state::AppState;
 fn main() {
     tauri::Builder::default()
         .plugin(tauri_plugin_notification::init())
+        .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_store::Builder::default().build())
         .setup(|app| {
             let data_dir = app
@@ -54,10 +55,14 @@ fn main() {
             commands::articles::list_articles,
             commands::articles::read_article,
             commands::articles::refresh_topic_now,
+            commands::articles::set_article_favorite,
+            commands::articles::list_favorite_articles,
             commands::feeds::list_topic_feeds,
             commands::feeds::add_feed_to_topic,
             commands::feeds::remove_feed_from_topic,
             commands::feeds::discover_feeds_for_site,
+            commands::search::search_news,
+            commands::search::read_search_result,
             commands::settings::get_settings,
             commands::settings::update_settings,
         ])

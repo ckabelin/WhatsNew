@@ -69,6 +69,25 @@ pub fn match_topic<'a>(directory: &'a [DirectoryCategory], topic: &str) -> Vec<&
         .collect()
 }
 
+/// Builds a Google News RSS search feed scoped to `topic`, used as a catch-all
+/// source so that any free-text topic (even ones the curated directory has no
+/// keywords for) still surfaces relevant, recent articles.
+pub fn google_news_feed(topic: &str) -> DirectoryFeed {
+    let mut url = reqwest::Url::parse("https://news.google.com/rss/search")
+        .expect("static Google News search URL must be valid");
+    url.query_pairs_mut()
+        .append_pair("q", &format!("{topic} when:7d"))
+        .append_pair("hl", "en-US")
+        .append_pair("gl", "US")
+        .append_pair("ceid", "US:en");
+
+    DirectoryFeed {
+        title: format!("Google News: {topic}"),
+        url: url.to_string(),
+        site: "https://news.google.com".to_string(),
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -106,5 +125,16 @@ mod tests {
         let directory = load_directory();
         let feeds = match_topic(&directory, "xyzzy plugh frobnicate");
         assert!(feeds.is_empty());
+    }
+
+    #[test]
+    fn google_news_feed_encodes_topic_query() {
+        let feed = google_news_feed("Formula 1 & Racing");
+        assert_eq!(feed.title, "Google News: Formula 1 & Racing");
+        assert_eq!(feed.site, "https://news.google.com");
+        assert!(feed.url.starts_with("https://news.google.com/rss/search?"));
+        assert!(feed.url.contains("q=Formula+1+%26+Racing+when%3A7d"));
+        assert!(feed.url.contains("hl=en-US"));
+        assert!(feed.url.contains("ceid=US%3Aen"));
     }
 }

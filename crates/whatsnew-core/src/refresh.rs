@@ -4,6 +4,7 @@ use sqlx::SqlitePool;
 use crate::db::{articles, feeds, topics};
 use crate::error::Result;
 use crate::feeds::{fetch, parse};
+use crate::matching;
 use crate::models::Article;
 
 /// The outcome of refreshing a single topic's feeds.
@@ -25,7 +26,15 @@ pub async fn refresh_topic(
     client: &Client,
     topic_id: i64,
 ) -> Result<RefreshResult> {
-    let topic_feeds = feeds::list_for_topic(pool, topic_id).await?;
+    let mut topic_feeds = feeds::list_for_topic(pool, topic_id).await?;
+    if topic_feeds.is_empty() {
+        // Topics created before fallback feeds existed, or whose curated match
+        // produced nothing, otherwise sit empty forever - self-heal here.
+        let topic = topics::get(pool, topic_id).await?;
+        matching::ensure_feeds_for_topic(pool, &topic).await?;
+        topic_feeds = feeds::list_for_topic(pool, topic_id).await?;
+    }
+
     let mut new_articles = Vec::new();
 
     for feed in topic_feeds {

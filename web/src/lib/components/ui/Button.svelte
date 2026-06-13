@@ -12,10 +12,10 @@
   let { variant = 'primary', class: className = '', children, ...rest }: Props = $props();
 
   const variantClasses: Record<Variant, string> = {
-    primary: 'bg-blue-600 text-white hover:bg-blue-500 disabled:bg-blue-600/50',
-    secondary: 'bg-neutral-800 text-neutral-100 hover:bg-neutral-700 disabled:bg-neutral-800/50',
-    ghost: 'bg-transparent text-neutral-300 hover:bg-neutral-800 disabled:text-neutral-500',
-    danger: 'bg-red-600 text-white hover:bg-red-500 disabled:bg-red-600/50'
+    primary: 'bg-accent text-accent-fg hover:bg-accent-hover disabled:opacity-50',
+    secondary: 'bg-surface-hover text-text hover:bg-active disabled:opacity-50',
+    ghost: 'bg-transparent text-text-muted hover:bg-surface-hover disabled:text-text-subtle',
+    danger: 'bg-danger text-white hover:bg-danger-hover disabled:opacity-50'
   };
 </script>
 

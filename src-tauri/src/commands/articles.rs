@@ -35,3 +35,21 @@ pub async fn refresh_topic_now(state: State<'_, AppState>, topic_id: i64) -> Res
         .map_err(|e| e.to_string())?;
     Ok(result.new_articles.len())
 }
+
+#[tauri::command]
+pub async fn set_article_favorite(
+    state: State<'_, AppState>,
+    article_id: i64,
+    favorite: bool,
+) -> Result<Article, String> {
+    articles::set_favorite(&state.db.pool, article_id, favorite)
+        .await
+        .map_err(|e| e.to_string())
+}
+
+#[tauri::command]
+pub async fn list_favorite_articles(state: State<'_, AppState>) -> Result<Vec<Article>, String> {
+    articles::list_favorites(&state.db.pool)
+        .await
+        .map_err(|e| e.to_string())
+}

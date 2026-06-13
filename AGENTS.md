@@ -1,4 +1,4 @@
-# CLAUDE.md
+# AGENTS.md
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 Always keep CLAUDE.md and AGENTS.md in sync
@@ -43,8 +43,10 @@ crates/whatsnew-core/
 │   ├── feeds/{mod,fetch,parse,discovery}.rs         # fetch, feed-rs parsing, autodiscovery
 │   ├── matching/{mod,directory}.rs                  # keyword matcher over feed_directory.json
 │   ├── refresh.rs            # refresh_topic(): fetch + parse + store + retention
+│   ├── reader.rs              # read_article()/read_url(): readable content extraction
+│   ├── search.rs              # search_news(): ad-hoc Google News search, not persisted
 │   └── retention.rs           # prune by retention_days / max_articles_per_topic
-└── tests/{db_tests,feed_parsing,retention}.rs
+└── tests/{db_tests,feed_parsing,retention,matching_tests}.rs
 
 src-tauri/
 ├── tauri.conf.json, capabilities/default.json, build.rs
@@ -53,21 +55,26 @@ src-tauri/
     ├── state.rs        # AppState { db: Arc<Db>, http: reqwest::Client }
     ├── scheduler.rs     # tokio interval -> refresh_topic per topic -> notify
     ├── notify.rs        # toast notification helper
-    └── commands/{topics,articles,feeds,settings}.rs
+    └── commands/{topics,articles,feeds,search,settings}.rs
 
 web/
 ├── src/app.html, src/app.css      # Tailwind v4 + self-hosted Inter
 ├── src/lib/
 │   ├── types.ts                   # TS mirrors of Rust models
-│   ├── api/{topics,articles,feeds,settings}.ts     # ONLY entry points to invoke()
-│   ├── stores/{topics,articles,settings}.ts        # Svelte writable stores
+│   ├── api/{topics,articles,feeds,search,settings}.ts  # ONLY entry points to invoke()
+│   ├── stores/{topics,articles,feeds,settings,viewPreferences,search,theme}.ts  # Svelte writable stores
+│   ├── relevance.ts, sort.ts       # article relevancy scoring + list sorting
 │   └── components/
 │       ├── ui/{Button,Input,Toggle,Modal}.svelte
-│       └── {TitleBar,Sidebar,ArticleCard,EmptyState,TopicListItem}.svelte
+│       └── {TitleBar,Sidebar,ArticleCard,ArticleListItem,ArticleHeadline,
+│           ViewControls,EmptyState,TopicListItem,SearchResultItem}.svelte
 └── src/routes/
     ├── +layout.svelte, +layout.ts   # TitleBar + Sidebar shell, ssr=false
     ├── +page.svelte                 # redirect to first topic or EmptyState
     ├── topic/[id]/+page.svelte      # article grid + refresh
+    ├── article/[id]/+page.svelte    # in-app readable article view
+    ├── search/+page.svelte          # ad-hoc news search
+    ├── search/read/+page.svelte     # in-app readable view for a search result
     ├── topics/+page.svelte          # add/remove topics, notification toggles
     └── settings/+page.svelte        # retention/cache/refresh settings form
 
@@ -149,6 +156,99 @@ same platform binaries as versioned GitHub Releases through the release workflow
 - **Native release builds per OS**: GitHub Releases are built on native Windows,
   macOS, and Linux runners via `tauri-apps/tauri-action`; no cross-OS desktop
   packaging is attempted locally.
+- **Article list view mode + sort preference are global UI state in
+  `tauri-plugin-store`** (`view-preferences.json`, via
+  `web/src/lib/stores/viewPreferences.ts`), not per-topic and not in SQLite —
+  consistent with the existing "structured settings in SQLite, ephemeral UI
+  state in `tauri-plugin-store`" split.
+- **Feed summary cleanup also resolves Google News redirect links**:
+  `whatsnew_core::feeds::parse::strip_html` now re-decodes leftover tag-like
+  text up to a couple more times, fixing feeds (notably Google News) that
+  double-encode `<description>` HTML (`&amp;lt;a href=...&amp;gt;`) and would
+  otherwise leak literal `<a href="...">...</a>` tags into summaries. When a
+  feed entry's `<link>` is a `news.google.com` redirect, `resolve_link` (used
+  by both `to_new_articles` and `search::to_search_article`) replaces it with
+  the original article URL extracted via `extract_first_link` from the
+  description's embedded `<a href>`, so the article/"read original" link
+  points at the source instead of Google's redirect.
+- **"Relevancy" sort has no dedicated backend score**: `web/src/lib/relevance.ts`
+  scores an article client-side by how many of the topic name's significant
+  words appear in its title (weighted higher) or summary. Revisit if a richer
+  signal (e.g. reusing `matching::directory` keyword weights) is needed.
+- **Every topic always gets a per-topic Google News RSS search feed**
+  (`matching::directory::google_news_feed`, linked via
+  `matching::ensure_feeds_for_topic`), in addition to any curated directory
+  matches. This guarantees free-text topics (e.g. "Formula 1") surface
+  relevant articles even when the curated directory has no matching category.
+  `refresh_topic` calls `ensure_feeds_for_topic` to self-heal topics that
+  somehow end up with zero linked feeds.
+- **Topic icons are keyword-matched lucide-svelte icons**
+  (`web/src/lib/topicIcon.ts`), not fetched favicons/logos - avoids any
+  per-topic icon licensing concerns since lucide-svelte (ISC) is already
+  bundled. The keyword rules are shared with the sidebar's auto-grouping
+  feature via `web/src/lib/topicCategory.ts` (`getTopicCategory`), which adds
+  a category `label` per rule; `topicIcon.ts` just delegates to it for the
+  icon.
+- **Sidebar width, "auto-group topics by category", expanded group state, and
+  group order are global UI state in `tauri-plugin-store`**
+  (`sidebarWidth`/`autoGroupTopics`/`expandedTopicGroup`/`topicGroupOrder`
+  in `view-preferences.json`, via `web/src/lib/stores/viewPreferences.ts`),
+  same pattern as `viewMode`/`sortMode` - not in SQLite, consistent with the
+  "structured settings in SQLite, ephemeral UI state in `tauri-plugin-store`"
+  split. The auto-group toggle lives on the Settings page even though it's
+  not a `whatsnew_core::Settings` field. When enabled (and the topic filter
+  is empty), the sidebar groups topics under collapsible, drag-reorderable
+  category headers (`Sidebar.svelte`'s `groupedTopics`/`groupOrder`).
+  `expandedTopicGroup` holds the single expanded category label (or `null`
+  if all collapsed) - `toggleGroup` enforces accordion behavior by setting it
+  to the clicked label or back to `null`, so at most one group is ever open.
+  `topicGroupOrder` stores any user-dragged group order; groups not present
+  in it fall back to ordering by each category's first-appearance position
+  across `$topics` (`groupOrder`'s `appearanceOrder`), so new categories land
+  near similarly-themed existing topics rather than at a fixed position.
+  While the filter input has text, the sidebar always renders a flat
+  `filteredTopics` list (grouping a filtered subset isn't meaningful), and
+  reverts to the grouped/accordion view once the filter is cleared.
+- **Ad-hoc "Search" page reuses the Google News RSS mechanism** (
+  `whatsnew_core::search::search_news`, same `google_news_feed` builder as
+  topics) but results are not persisted - no `Feed`/`Article` rows are
+  created. `whatsnew_core::reader::read_url` (factored out of
+  `read_article`) extracts readable content for a search result's URL
+  directly, without requiring a DB-backed `Article`. The selected result is
+  handed to `web/src/routes/search/read` via a small Svelte store
+  (`stores/search.ts`) rather than query params, to satisfy the
+  `svelte/no-navigation-without-resolve` lint rule. The search page's
+  query/results/loading/error/searched state also lives in module-level
+  writable stores in `stores/search.ts`
+  (`searchQuery`/`searchResults`/`searchLoading`/`searchError`/
+  `searchPerformed`), not local component state, so navigating away to read
+  a result and back doesn't lose the search. `performSearch()` also starts
+  a 60-second `setInterval` that silently re-runs `search_news` for the
+  active query and replaces `searchResults` (errors are swallowed, keeping
+  the last good results); the interval is module-scoped, so it keeps
+  running across navigation, and is stopped by `clearSearch()` (currently
+  unused, reserved for a future "clear search" action).
+- **Theming is CSS-variable-based, not per-component Tailwind colors**:
+  `web/src/app.css` defines semantic color tokens (`--bg`, `--surface`,
+  `--text`, `--accent`, `--danger`, `--favorite`, `--highlight`,
+  `--error-*`, etc.) exposed to Tailwind via `@theme inline` as utilities
+  (`bg-surface`, `text-text-muted`, `border-border`, ...). Every theme/mode
+  combination overrides these vars under `[data-theme="..."][data-mode="..."]`
+  selectors on `<html>`. Three themes ship - `vscode` (default), `outlook`,
+  `console` - each with `dark`/`light` variants (`vscode`+`dark` is the
+  overall default, matching `:root`). `web/src/lib/stores/theme.ts` persists
+  the chosen `themeName`/`themeMode` via `tauri-plugin-store`
+  (`theme-preferences.json`), same pattern as `viewPreferences.ts`, and
+  `+layout.svelte` applies them as `data-theme`/`data-mode` on
+  `document.documentElement`. Components must use the semantic color
+  utilities, never raw Tailwind palette colors (`neutral-*`, `blue-*`, etc.).
+- **External links open in the system default browser via
+  `tauri-plugin-opener`** (`@tauri-apps/plugin-opener`'s `openUrl`, gated by
+  the `opener:default` capability), not in-app navigation. The source-URL
+  link at the top of `routes/article/[id]/+page.svelte` and
+  `routes/search/read/+page.svelte` is rendered as a `<button>` (not `<a>`)
+  to avoid SvelteKit's `svelte/no-navigation-without-resolve` lint rule,
+  since these are external URLs, not app routes.
 
 ## Known caveats
 
@@ -161,6 +261,10 @@ same platform binaries as versioned GitHub Releases through the release workflow
   app falls back to the system font stack without it.
 - Windows toast notifications may not show in unbundled `tauri dev` — verify via
   a bundled build.
+- The main window has `dragDropEnabled: false` in `tauri.conf.json`. Without
+  it, WebView2's native OS file-drop handler swallows in-page HTML5
+  drag-and-drop events (`dragstart`/`dragover`/`drop`), breaking the sidebar's
+  topic-reordering drag handles on Windows.
 
 ## Self sustainablity
 

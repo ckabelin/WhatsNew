@@ -26,5 +26,192 @@ body {
 }
 
 body {
-  @apply bg-neutral-950 text-neutral-100;
+  @apply bg-bg text-text;
+}
+
+/* Theme system: every theme defines the same set of semantic custom
+   properties below, switched via `data-theme` (palette) and `data-mode`
+   (light/dark) attributes on <html>. `@theme inline` exposes them as Tailwind
+   color utilities (bg-surface, text-text-muted, border-border, etc.) so
+   components never reference raw palette colors directly. */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-active: var(--active);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+  --color-text-subtle: var(--text-subtle);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-fg: var(--accent-fg);
+  --color-danger: var(--danger);
+  --color-danger-hover: var(--danger-hover);
+  --color-favorite: var(--favorite);
+  --color-favorite-hover: var(--favorite-hover);
+  --color-highlight: var(--highlight);
+  --color-highlight-ring: var(--highlight-ring);
+  --color-error-bg: var(--error-bg);
+  --color-error-border: var(--error-border);
+  --color-error-heading: var(--error-heading);
+  --color-error-text: var(--error-text);
+}
+
+/* VS Code - dark (default theme) */
+:root,
+[data-theme='vscode'][data-mode='dark'] {
+  --bg: #1e1e1e;
+  --surface: #252526;
+  --surface-hover: #2a2d2e;
+  --active: #37373d;
+  --border: #3c3c3c;
+  --border-strong: #5a5a5a;
+  --text: #cccccc;
+  --text-muted: #9d9d9d;
+  --text-subtle: #6e7681;
+  --accent: #0e639c;
+  --accent-hover: #1177bb;
+  --accent-fg: #ffffff;
+  --danger: #c93c3c;
+  --danger-hover: #e04f4f;
+  --favorite: #dcb67a;
+  --favorite-hover: #ecd29a;
+  --highlight: rgba(14, 99, 156, 0.25);
+  --highlight-ring: #1177bb;
+  --error-bg: #5a1d1d;
+  --error-border: #f14c4c;
+  --error-heading: #ffd7d7;
+  --error-text: #f5b8b8;
+}
+
+/* VS Code - light */
+[data-theme='vscode'][data-mode='light'] {
+  --bg: #ffffff;
+  --surface: #f3f3f3;
+  --surface-hover: #e8e8e8;
+  --active: #e4e6f1;
+  --border: #e0e0e0;
+  --border-strong: #c6c6c6;
+  --text: #1f1f1f;
+  --text-muted: #6b6b6b;
+  --text-subtle: #8a8a8a;
+  --accent: #005fb8;
+  --accent-hover: #0078d4;
+  --accent-fg: #ffffff;
+  --danger: #cd3131;
+  --danger-hover: #b32424;
+  --favorite: #b58900;
+  --favorite-hover: #946f00;
+  --highlight: rgba(0, 95, 184, 0.1);
+  --highlight-ring: #005fb8;
+  --error-bg: #fdecea;
+  --error-border: #d13438;
+  --error-heading: #5a1414;
+  --error-text: #842828;
+}
+
+/* Outlook - light */
+[data-theme='outlook'][data-mode='light'] {
+  --bg: #ffffff;
+  --surface: #f3f2f1;
+  --surface-hover: #edebe9;
+  --active: #c7e0f4;
+  --border: #e1dfdd;
+  --border-strong: #c8c6c4;
+  --text: #201f1e;
+  --text-muted: #605e5c;
+  --text-subtle: #a19f9d;
+  --accent: #0078d4;
+  --accent-hover: #106ebe;
+  --accent-fg: #ffffff;
+  --danger: #d13438;
+  --danger-hover: #a4262c;
+  --favorite: #ffb900;
+  --favorite-hover: #d29200;
+  --highlight: rgba(0, 120, 212, 0.1);
+  --highlight-ring: #0078d4;
+  --error-bg: #fdf3f4;
+  --error-border: #d13438;
+  --error-heading: #5c1a1c;
+  --error-text: #842830;
+}
+
+/* Outlook - dark */
+[data-theme='outlook'][data-mode='dark'] {
+  --bg: #1f1f1f;
+  --surface: #292929;
+  --surface-hover: #323232;
+  --active: #2b3a4a;
+  --border: #3b3a39;
+  --border-strong: #514f4d;
+  --text: #f3f2f1;
+  --text-muted: #c8c6c4;
+  --text-subtle: #979593;
+  --accent: #4ba6f7;
+  --accent-hover: #6fb9ff;
+  --accent-fg: #00263d;
+  --danger: #c4314b;
+  --danger-hover: #d9495f;
+  --favorite: #ffd335;
+  --favorite-hover: #ffe066;
+  --highlight: rgba(75, 166, 247, 0.16);
+  --highlight-ring: #4ba6f7;
+  --error-bg: #3b1d22;
+  --error-border: #c4314b;
+  --error-heading: #ffd7dd;
+  --error-text: #f3b6c0;
+}
+
+/* Console - dark */
+[data-theme='console'][data-mode='dark'] {
+  --bg: #0b0e0b;
+  --surface: #12170f;
+  --surface-hover: #1c241b;
+  --active: #233324;
+  --border: #263126;
+  --border-strong: #3a4d39;
+  --text: #c8f0c8;
+  --text-muted: #8fae8f;
+  --text-subtle: #5d7a5d;
+  --accent: #39ff14;
+  --accent-hover: #5cff42;
+  --accent-fg: #04210b;
+  --danger: #e5484d;
+  --danger-hover: #f2555a;
+  --favorite: #ffd866;
+  --favorite-hover: #ffe48f;
+  --highlight: rgba(57, 255, 20, 0.12);
+  --highlight-ring: #39ff14;
+  --error-bg: #2b0f0d;
+  --error-border: #e5484d;
+  --error-heading: #ffd2cf;
+  --error-text: #ffaba6;
+}
+
+/* Console - light */
+[data-theme='console'][data-mode='light'] {
+  --bg: #f7f7f2;
+  --surface: #eef0e9;
+  --surface-hover: #e2e6db;
+  --active: #d3ecd3;
+  --border: #d6dacc;
+  --border-strong: #b8c2ae;
+  --text: #1a2e1a;
+  --text-muted: #4f6650;
+  --text-subtle: #7e9180;
+  --accent: #15803d;
+  --accent-hover: #166534;
+  --accent-fg: #ffffff;
+  --danger: #dc2626;
+  --danger-hover: #b91c1c;
+  --favorite: #b45309;
+  --favorite-hover: #92400e;
+  --highlight: rgba(21, 128, 61, 0.1);
+  --highlight-ring: #15803d;
+  --error-bg: #fdecea;
+  --error-border: #dc2626;
+  --error-heading: #5c1414;
+  --error-text: #842020;
 }

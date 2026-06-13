@@ -27,7 +27,7 @@
     onkeydown={onKeydown}
   >
     <div
-      class="min-w-80 rounded-lg border border-neutral-800 bg-neutral-900 p-4 shadow-xl"
+      class="min-w-80 rounded-lg border border-border bg-surface p-4 shadow-xl"
       role="dialog"
       aria-modal="true"
       tabindex="-1"
@@ -35,7 +35,7 @@
       onkeydown={(e) => e.stopPropagation()}
     >
       {#if title}
-        <h2 class="mb-3 text-base font-semibold text-neutral-100">{title}</h2>
+        <h2 class="mb-3 text-base font-semibold text-text">{title}</h2>
       {/if}
       {@render children()}
     </div>

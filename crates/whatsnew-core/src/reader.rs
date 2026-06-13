@@ -29,6 +29,17 @@ pub struct ReadableArticle {
     pub content: Vec<ReadableBlock>,
 }
 
+/// Extracted readable content for an arbitrary URL, not tied to a stored
+/// `Article` - used for ad-hoc search results.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ReadableUrl {
+    pub source_url: String,
+    pub title: String,
+    pub paragraphs: Vec<String>,
+    pub images: Vec<ReadableImage>,
+    pub content: Vec<ReadableBlock>,
+}
+
 pub async fn read_article(
     pool: &sqlx::SqlitePool,
     client: &Client,
@@ -39,10 +50,25 @@ pub async fn read_article(
         .link
         .clone()
         .ok_or_else(|| CoreError::InvalidInput("article has no source URL".to_string()))?;
-    let url = reqwest::Url::parse(&source_url)
+    let readable = read_url(client, &source_url, &article.title).await?;
+
+    Ok(ReadableArticle {
+        article,
+        source_url: readable.source_url,
+        title: readable.title,
+        paragraphs: readable.paragraphs,
+        images: readable.images,
+        content: readable.content,
+    })
+}
+
+/// Fetches `url` and extracts readable content from it, falling back to
+/// `fallback_title` if no title can be extracted from the page itself.
+pub async fn read_url(client: &Client, url: &str, fallback_title: &str) -> Result<ReadableUrl> {
+    let parsed = reqwest::Url::parse(url)
         .map_err(|e| CoreError::InvalidInput(format!("invalid article URL: {e}")))?;
 
-    match url.scheme() {
+    match parsed.scheme() {
         "http" | "https" => {}
         scheme => {
             return Err(CoreError::InvalidInput(format!(
@@ -52,17 +78,16 @@ pub async fn read_article(
     }
 
     let html = client
-        .get(url.clone())
+        .get(parsed.clone())
         .send()
         .await?
         .error_for_status()?
         .text()
         .await?;
-    let extracted = extract_readable_content(&html, &url, &article.title);
+    let extracted = extract_readable_content(&html, &parsed, fallback_title);
 
-    Ok(ReadableArticle {
-        article,
-        source_url,
+    Ok(ReadableUrl {
+        source_url: url.to_string(),
         title: extracted.title,
         paragraphs: extracted.paragraphs,
         images: extracted.images,
