@@ -51,7 +51,7 @@ introduced.
 
 ### Internal
 
-- Changed the release workflow so pushes to `main` create run-numbered
+- Changed the release workflow so successful `main` CI runs create run-numbered
   prerelease GitHub Releases with desktop binaries, while `v*.*.*` tags remain
   versioned releases.
 - Documented in `AGENTS.md` and `CLAUDE.md` that notable changes must update
