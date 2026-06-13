@@ -155,6 +155,8 @@ from the repo root).
 ## Self sustainablity
 
 Update CLAUDE.md whenever you learn something new about the app, the architecture or basically anything that is worth persisting for future sessions.
+Always keep CLAUDE.md and AGENTS.md in sync.
+Update CHANGELOG.md in the same change whenever you add, change, fix, remove, or internally restructure anything notable for users, maintainers, releases, or future AI agents.
 
 ## Spec-Driven Development workflow
 
