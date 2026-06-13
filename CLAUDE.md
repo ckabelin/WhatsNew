@@ -98,9 +98,10 @@ from the repo root).
 
 The Tauri bundle config targets all formats supported by the current OS. Local
 build scripts print Windows `.exe`/`.msi`, macOS `.dmg`/`.app.tar.gz`, and Linux
-`.AppImage`/`.deb`/`.rpm` artifacts when produced. Tagged releases matching
-`v*.*.*` publish Windows, macOS Apple Silicon, macOS Intel, and Linux binaries to
-the GitHub Release assets through the release workflow.
+`.AppImage`/`.deb`/`.rpm` artifacts when produced. Pushes to `main` create
+run-numbered prerelease GitHub Releases with Windows, macOS Apple Silicon, macOS
+Intel, and Linux binaries. Tagged releases matching `v*.*.*` publish the same
+platform binaries as versioned GitHub Releases through the release workflow.
 
 ## Coding conventions
 
@@ -186,6 +187,8 @@ The foundation + MVP described above corresponds to `specs/001-whatsnew-mvp/` go
 forward — start there for the next feature's context.
 
 <!-- SPECKIT START -->
+
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
+
 <!-- SPECKIT END -->
