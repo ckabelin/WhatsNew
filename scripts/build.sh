@@ -9,7 +9,7 @@ cargo tauri build
 
 bundle_dir="$root/target/release/bundle"
 echo ""
-echo "Build complete. Installer(s):"
-find "$bundle_dir" -type f \( -name '*.exe' -o -name '*.msi' -o -name '*.dmg' -o -name '*.AppImage' -o -name '*.deb' -o -name '*.rpm' \) 2>/dev/null | while read -r f; do
+echo "Build complete. Bundle artifact(s):"
+find "$bundle_dir" -type f \( -name '*.exe' -o -name '*.msi' -o -name '*.dmg' -o -name '*.app.tar.gz' -o -name '*.AppImage' -o -name '*.deb' -o -name '*.rpm' \) 2>/dev/null | while read -r f; do
     echo "  $f"
 done

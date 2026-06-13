@@ -82,7 +82,7 @@ scripts/{setup,dev,build,test}.sh     # bash equivalents (macOS/Linux/WSL)
 ./scripts/setup.ps1   # verify Rust/MSVC/Node, install tauri-cli, npm install
 ./scripts/dev.ps1      # npm run tauri dev (hot reload)
 ./scripts/test.ps1      # cargo test --workspace, clippy, npm run check, npm run lint
-./scripts/build.ps1      # npm run tauri build, prints installer path
+./scripts/build.ps1      # cargo tauri build, prints bundle artifact paths
 ```
 
 Bash equivalents (macOS/Linux/WSL) live alongside them as `scripts/*.sh` and run the
@@ -95,6 +95,12 @@ in `web/`: `npm run check`, `npm run lint`, `npm run build`; in `src-tauri/`:
 `src-tauri/` since that's where `tauri.conf.json` lives; its
 `beforeDevCommand`/`beforeBuildCommand` shell out to `npm --prefix web run ...`
 from the repo root).
+
+The Tauri bundle config targets all formats supported by the current OS. Local
+build scripts print Windows `.exe`/`.msi`, macOS `.dmg`/`.app.tar.gz`, and Linux
+`.AppImage`/`.deb`/`.rpm` artifacts when produced. Tagged releases matching
+`v*.*.*` publish Windows, macOS Apple Silicon, macOS Intel, and Linux binaries to
+the GitHub Release assets through the release workflow.
 
 ## Coding conventions
 
@@ -139,6 +145,9 @@ from the repo root).
   `tauri-plugin-store` is only for ephemeral UI/window state.
 - **Curated feed directory + autodiscovery + manual entry** for MVP feed
   discovery — no external search-engine scraping.
+- **Native release builds per OS**: GitHub Releases are built on native Windows,
+  macOS, and Linux runners via `tauri-apps/tauri-action`; no cross-OS desktop
+  packaging is attempted locally.
 
 ## Known caveats
 

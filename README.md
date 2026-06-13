@@ -34,7 +34,8 @@ This repository contains the foundation and MVP implementation:
 - `reqwest` with `rustls-tls` for HTTP.
 - `feed-rs` for RSS, Atom, and JSON Feed parsing.
 - SvelteKit, Svelte 5, TypeScript, Tailwind CSS v4, and lucide-svelte for the UI.
-- GitHub Actions CI for Rust checks and frontend checks.
+- GitHub Actions CI for Rust checks, frontend checks, and desktop compile
+  checks on Windows, macOS, and Linux.
 
 ## Repository Layout
 
@@ -140,19 +141,22 @@ npm run lint
 npm run build
 ```
 
-CI currently runs Rust checks on Windows and Ubuntu, and frontend lint/check/build
-on Ubuntu with Node 20.
+CI runs Rust checks on Windows and Ubuntu, frontend lint/check/build on Ubuntu,
+and a `cargo tauri build --no-bundle --ci` desktop compile check on Windows,
+macOS, and Linux.
 
 ## Build
 
-Create a release bundle:
+Create a release bundle for the current operating system:
 
 ```powershell
 ./scripts/build.ps1
 ```
 
-The Tauri config currently targets a Windows NSIS installer. The build script
-prints installer paths from `target/release/bundle`.
+The Tauri config targets all bundle formats supported by the current operating
+system. Local builds print bundle paths from `target/release/bundle`, including
+Windows `.exe`/`.msi`, macOS `.dmg`/`.app.tar.gz`, and Linux `.AppImage`,
+`.deb`, or `.rpm` artifacts when those formats are produced.
 
 Manual command:
 
@@ -161,8 +165,10 @@ cd src-tauri
 cargo tauri build
 ```
 
-Tagged releases matching `v*.*.*` trigger the GitHub Actions release workflow,
-which builds a draft release on `windows-latest` through `tauri-apps/tauri-action`.
+Tagged releases matching `v*.*.*` trigger the GitHub Actions release workflow.
+The workflow builds native Windows, macOS Apple Silicon, macOS Intel, and Linux
+bundles, then uploads the installers to the GitHub Release for that tag through
+`tauri-apps/tauri-action`.
 
 ## Architecture Notes
 

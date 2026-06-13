@@ -46,11 +46,15 @@ introduced.
 - Show the current article title in the sticky reader toolbar.
 - Preserve article image placement relative to text in the in-app reader when
   extracting readable content.
+- Added native Windows, macOS, and Linux desktop build coverage and GitHub
+  Release binaries for tagged releases.
 
 ### Internal
 
 - Documented in `AGENTS.md` and `CLAUDE.md` that notable changes must update
   `CHANGELOG.md` in the same change.
+- Expanded the Tauri bundle configuration and CI/release workflows to validate
+  desktop builds across Windows, macOS, and Linux.
 
 ## 2026-06-13
 

@@ -14,7 +14,17 @@ try {
 }
 
 $bundleDir = Join-Path $root 'target\release\bundle'
+$bundlePatterns = @(
+    '*.exe',
+    '*.msi',
+    '*.dmg',
+    '*.app.tar.gz',
+    '*.AppImage',
+    '*.deb',
+    '*.rpm'
+)
+
 Write-Host ""
-Write-Host "Build complete. Installer(s):"
-Get-ChildItem -Recurse -Path $bundleDir -Include '*.exe', '*.msi' -ErrorAction SilentlyContinue |
+Write-Host "Build complete. Bundle artifact(s):"
+Get-ChildItem -Recurse -Path $bundleDir -Include $bundlePatterns -ErrorAction SilentlyContinue |
     ForEach-Object { Write-Host "  $($_.FullName)" }
