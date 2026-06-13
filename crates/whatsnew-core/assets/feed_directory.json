@@ -1,0 +1,84 @@
+[
+  {
+    "category": "Technology",
+    "keywords": ["tech", "technology", "software", "computing", "gadgets", "ai", "artificial intelligence"],
+    "feeds": [
+      { "title": "Ars Technica", "url": "https://feeds.arstechnica.com/arstechnica/index", "site": "https://arstechnica.com" },
+      { "title": "The Verge", "url": "https://www.theverge.com/rss/index.xml", "site": "https://www.theverge.com" },
+      { "title": "BBC Technology", "url": "https://feeds.bbci.co.uk/news/technology/rss.xml", "site": "https://www.bbc.com/news/technology" }
+    ]
+  },
+  {
+    "category": "Programming",
+    "keywords": ["programming", "rust", "code", "coding", "developer", "software engineering", "github", "open source"],
+    "feeds": [
+      { "title": "Hacker News: Front Page", "url": "https://hnrss.org/frontpage", "site": "https://news.ycombinator.com" },
+      { "title": "Lobsters", "url": "https://lobste.rs/rss", "site": "https://lobste.rs" },
+      { "title": "The GitHub Blog", "url": "https://github.blog/feed/", "site": "https://github.blog" }
+    ]
+  },
+  {
+    "category": "World News",
+    "keywords": ["world", "news", "politics", "international", "global"],
+    "feeds": [
+      { "title": "BBC World News", "url": "https://feeds.bbci.co.uk/news/world/rss.xml", "site": "https://www.bbc.com/news/world" },
+      { "title": "NPR News", "url": "https://feeds.npr.org/1004/rss.xml", "site": "https://www.npr.org/sections/world" }
+    ]
+  },
+  {
+    "category": "US News",
+    "keywords": ["us", "usa", "america", "national", "united states"],
+    "feeds": [
+      { "title": "NPR National News", "url": "https://feeds.npr.org/1003/rss.xml", "site": "https://www.npr.org/sections/national" },
+      { "title": "BBC US & Canada", "url": "https://feeds.bbci.co.uk/news/world/us_and_canada/rss.xml", "site": "https://www.bbc.com/news/world/us_and_canada" }
+    ]
+  },
+  {
+    "category": "Science",
+    "keywords": ["science", "research", "discovery", "physics", "biology", "chemistry"],
+    "feeds": [
+      { "title": "NASA Breaking News", "url": "https://www.nasa.gov/news-release/feed/", "site": "https://www.nasa.gov" },
+      { "title": "ScienceDaily", "url": "https://www.sciencedaily.com/rss/all.xml", "site": "https://www.sciencedaily.com" },
+      { "title": "BBC Science & Environment", "url": "https://feeds.bbci.co.uk/news/science_and_environment/rss.xml", "site": "https://www.bbc.com/news/science_and_environment" }
+    ]
+  },
+  {
+    "category": "Business",
+    "keywords": ["business", "finance", "economy", "markets", "stocks", "trade"],
+    "feeds": [
+      { "title": "NPR Business", "url": "https://feeds.npr.org/1006/rss.xml", "site": "https://www.npr.org/sections/business" },
+      { "title": "BBC Business", "url": "https://feeds.bbci.co.uk/news/business/rss.xml", "site": "https://www.bbc.com/news/business" }
+    ]
+  },
+  {
+    "category": "Sports",
+    "keywords": ["sports", "sport", "football", "soccer", "basketball", "baseball", "olympics"],
+    "feeds": [
+      { "title": "BBC Sport", "url": "https://feeds.bbci.co.uk/sport/rss.xml", "site": "https://www.bbc.com/sport" }
+    ]
+  },
+  {
+    "category": "Entertainment",
+    "keywords": ["entertainment", "movies", "film", "music", "celebrity", "tv", "television"],
+    "feeds": [
+      { "title": "NPR Pop Culture", "url": "https://feeds.npr.org/1008/rss.xml", "site": "https://www.npr.org/sections/pop-culture" },
+      { "title": "BBC Entertainment & Arts", "url": "https://feeds.bbci.co.uk/news/entertainment_and_arts/rss.xml", "site": "https://www.bbc.com/news/entertainment_and_arts" }
+    ]
+  },
+  {
+    "category": "Health",
+    "keywords": ["health", "medicine", "medical", "wellness", "disease", "healthcare"],
+    "feeds": [
+      { "title": "NPR Health", "url": "https://feeds.npr.org/1128/rss.xml", "site": "https://www.npr.org/sections/health" },
+      { "title": "BBC Health", "url": "https://feeds.bbci.co.uk/news/health/rss.xml", "site": "https://www.bbc.com/news/health" }
+    ]
+  },
+  {
+    "category": "Environment & Climate",
+    "keywords": ["environment", "climate", "climate change", "sustainability", "energy", "weather"],
+    "feeds": [
+      { "title": "NASA Climate", "url": "https://climate.nasa.gov/news/rss.xml", "site": "https://climate.nasa.gov" },
+      { "title": "BBC Science & Environment", "url": "https://feeds.bbci.co.uk/news/science_and_environment/rss.xml", "site": "https://www.bbc.com/news/science_and_environment" }
+    ]
+  }
+]

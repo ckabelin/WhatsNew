@@ -1,0 +1,30 @@
+pre-commit:
+  parallel: true
+  commands:
+    rust-fmt:
+      glob: "*.rs"
+      run: rustfmt --edition 2021 {staged_files}
+      stage_fixed: true
+    frontend-format:
+      root: "web/"
+      glob: "*.{ts,js,svelte,css,html,json}"
+      run: npx prettier --write {staged_files}
+      stage_fixed: true
+    frontend-lint:
+      root: "web/"
+      glob: "*.{ts,js,svelte}"
+      run: npx eslint {staged_files}
+
+pre-push:
+  parallel: false
+  commands:
+    cargo-test:
+      run: cargo test --workspace
+    cargo-clippy:
+      run: cargo clippy --workspace --all-targets -- -D warnings
+    frontend-check:
+      root: "web/"
+      run: npm run check
+    frontend-lint:
+      root: "web/"
+      run: npm run lint
