@@ -17,6 +17,7 @@
   const published = $derived(formatDate(article.published_at));
 </script>
 
+<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
 <a
   href={article.link ?? undefined}
   data-sveltekit-reload
