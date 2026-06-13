@@ -36,6 +36,7 @@ pub struct Article {
     pub summary: Option<String>,
     pub published_at: Option<DateTime<Utc>>,
     pub fetched_at: DateTime<Utc>,
+    pub is_favorite: bool,
 }
 
 /// Global application settings (single row).

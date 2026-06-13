@@ -9,3 +9,8 @@ export const readArticle = (articleId: number) =>
 
 export const refreshTopicNow = (topicId: number) =>
   invoke<number>('refresh_topic_now', { topicId });
+
+export const setArticleFavorite = (articleId: number, favorite: boolean) =>
+  invoke<Article>('set_article_favorite', { articleId, favorite });
+
+export const listFavoriteArticles = () => invoke<Article[]>('list_favorite_articles');

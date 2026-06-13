@@ -14,6 +14,7 @@ tauri-build = { version = "2", features = [] }
 whatsnew-core = { path = "../crates/whatsnew-core" }
 tauri = { version = "2", features = ["tray-icon"] }
 tauri-plugin-notification = "2"
+tauri-plugin-opener = "2"
 tauri-plugin-store = "2"
 serde.workspace = true
 serde_json.workspace = true

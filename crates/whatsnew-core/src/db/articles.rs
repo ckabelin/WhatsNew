@@ -73,6 +73,27 @@ pub async fn get(pool: &SqlitePool, article_id: i64) -> Result<Article> {
     )
 }
 
+/// Sets `article_id`'s favorite/bookmark flag and returns the updated article.
+pub async fn set_favorite(pool: &SqlitePool, article_id: i64, favorite: bool) -> Result<Article> {
+    sqlx::query("UPDATE articles SET is_favorite = ? WHERE id = ?")
+        .bind(favorite)
+        .bind(article_id)
+        .execute(pool)
+        .await?;
+    get(pool, article_id).await
+}
+
+/// Lists every bookmarked article across all topics/feeds, most recent first.
+pub async fn list_favorites(pool: &SqlitePool) -> Result<Vec<Article>> {
+    Ok(sqlx::query_as::<_, Article>(
+        "SELECT * FROM articles \
+         WHERE is_favorite = 1 \
+         ORDER BY COALESCE(published_at, fetched_at) DESC",
+    )
+    .fetch_all(pool)
+    .await?)
+}
+
 /// Deletes all articles older than `cutoff` (by published date, falling back to
 /// fetched date). Returns the number of rows deleted.
 pub async fn delete_older_than(pool: &SqlitePool, cutoff: DateTime<Utc>) -> Result<u64> {

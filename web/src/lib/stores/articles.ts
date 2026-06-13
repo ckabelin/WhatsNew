@@ -18,3 +18,9 @@ export async function refreshAndReload(topicId: number) {
   await articlesApi.refreshTopicNow(topicId);
   await loadArticles(topicId);
 }
+
+export async function toggleArticleFavorite(article: Article) {
+  const updated = await articlesApi.setArticleFavorite(article.id, !article.is_favorite);
+  articles.update((list) => list.map((a) => (a.id === updated.id ? updated : a)));
+  return updated;
+}

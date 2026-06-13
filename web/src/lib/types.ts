@@ -27,6 +27,7 @@ export interface Article {
   summary: string | null;
   published_at: string | null;
   fetched_at: string;
+  is_favorite: boolean;
 }
 
 export interface ReadableArticle {
@@ -64,4 +65,19 @@ export interface Settings {
 export interface DiscoveredFeed {
   url: string;
   title: string | null;
+}
+
+export interface SearchArticle {
+  title: string;
+  link: string | null;
+  summary: string | null;
+  published_at: string | null;
+}
+
+export interface ReadableUrl {
+  source_url: string;
+  title: string;
+  paragraphs: string[];
+  images: ReadableImage[];
+  content: ReadableBlock[];
 }

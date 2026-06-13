@@ -5,6 +5,8 @@
   import TitleBar from '$lib/components/TitleBar.svelte';
   import Sidebar from '$lib/components/Sidebar.svelte';
   import { loadTopics } from '$lib/stores/topics';
+  import { initViewPreferences } from '$lib/stores/viewPreferences';
+  import { initTheme, themeName, themeMode } from '$lib/stores/theme';
 
   interface Props {
     children: Snippet;
@@ -14,6 +16,13 @@
 
   onMount(() => {
     loadTopics();
+    initViewPreferences();
+    initTheme();
+  });
+
+  $effect(() => {
+    document.documentElement.dataset.theme = $themeName;
+    document.documentElement.dataset.mode = $themeMode;
   });
 </script>
 

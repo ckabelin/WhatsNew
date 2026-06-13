@@ -6,6 +6,7 @@ pub mod models;
 pub mod reader;
 pub mod refresh;
 pub mod retention;
+pub mod search;
 
 pub use db::Db;
 pub use error::{CoreError, Result};

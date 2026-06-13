@@ -14,13 +14,13 @@
 
 <div class="flex flex-col gap-1">
   {#if label}
-    <label for={inputId} class="text-sm font-medium text-neutral-300">{label}</label>
+    <label for={inputId} class="text-sm font-medium text-text-muted">{label}</label>
   {/if}
   <input
     id={inputId}
     bind:value
     {...rest}
-    class="rounded-md border border-neutral-700 bg-neutral-900 px-3 py-1.5 text-sm text-neutral-100
-      placeholder:text-neutral-500 focus:border-blue-500 focus:outline-none {className}"
+    class="rounded-md border border-border-strong bg-surface px-3 py-1.5 text-sm text-text
+      placeholder:text-text-subtle focus:border-accent focus:outline-none {className}"
   />
 </div>
